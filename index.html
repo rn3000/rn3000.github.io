@@ -3,47 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleria</title>
     <style>
-        /* Reset e Stile Generale */
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             background-color: white;
-            font-family: sans-serif;
         }
 
-        /* La Griglia Responsiva */
         .gallery {
             display: grid;
-            /* Crea colonne che si adattano: minimo 250px, massimo 1 frazione di spazio */
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
+            /* Griglia automatica: prova a metterne 3, ma si adatta se lo schermo è piccolo */
+            grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+            gap: 10px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Contenitore Immagine */
         .img-container {
             position: relative;
             cursor: pointer;
-            overflow: hidden;
-            background: #f9f9f9;
+            outline: none;
+            aspect-ratio: 1 / 1; /* Rende le miniature quadrate e ordinate */
         }
 
         .img-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Mantiene le proporzioni tagliando l'eccesso */
+            object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
         }
 
-        /* Effetto Ingrandimento (Lightbox "fai-da-te") */
-        /* Quando l'utente clicca, usiamo il focus per simulare l'apertura */
-        .img-container:focus {
-            outline: none;
-        }
-
+        /* Effetto click per ingrandire */
         .img-container:focus img {
             position: fixed;
             top: 0;
@@ -51,17 +42,15 @@
             width: 100vw;
             height: 100vh;
             object-fit: contain;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
+            z-index: 9999;
+            background: white;
+            padding: 10px;
             box-sizing: border-box;
         }
 
-        /* Testo di aiuto */
-        .info {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
+        /* Nasconde la barra di scorrimento quando l'immagine è aperta (opzionale) */
+        .img-container:focus {
+            z-index: 10000;
         }
     </style>
 </head>
@@ -69,15 +58,15 @@
 
     <div class="gallery">
         <div class="img-container" tabindex="0">
-            <img src="https://picsum.photos/600/800" alt="Descrizione">
+            <img src="https://picsum.photos/800/1200" alt="Foto">
         </div>
         
         <div class="img-container" tabindex="0">
-            <img src="https://picsum.photos/800/600" alt="Descrizione">
+            <img src="https://picsum.photos/1200/800" alt="Foto">
         </div>
 
         <div class="img-container" tabindex="0">
-            <img src="https://picsum.photos/700/700" alt="Descrizione">
+            <img src="https://picsum.photos/1000/1000" alt="Foto">
         </div>
         </div>
 
