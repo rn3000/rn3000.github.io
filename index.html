@@ -6,50 +6,75 @@
     <style>
         body {
             margin: 0;
-            padding: 10px;
+            padding: 15px;
             background-color: white;
+            font-family: sans-serif;
         }
 
+        /* La Griglia Intelligente */
         .gallery {
-            display: grid;
-            /* Griglia automatica: prova a metterne 3, ma si adatta se lo schermo è piccolo */
-            grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
-            gap: 10px;
+            /* Usiamo le colonne CSS per un effetto "diario/masonry" senza tagliare le foto */
+            column-count: 3;
+            column-gap: 15px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
+        /* Cambio colonne in base alla grandezza schermo */
+        @media (max-width: 900px) {
+            .gallery { column-count: 2; }
+        }
+        @media (max-width: 600px) {
+            .gallery { column-count: 1; }
+        }
+
         .img-container {
-            position: relative;
+            display: inline-block; /* Necessario per il layout a colonne */
+            width: 100%;
+            margin-bottom: 10px;
             cursor: pointer;
             outline: none;
-            aspect-ratio: 1 / 1; /* Rende le miniature quadrate e ordinate */
         }
 
         .img-container img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto; /* Mantiene le proporzioni originali (niente crop) */
             display: block;
+            border-radius: 4px; /* Opzionale: arrotonda leggermente gli angoli */
+            transition: opacity 0.2s;
         }
 
-        /* Effetto click per ingrandire */
+        .img-container:hover img {
+            opacity: 0.9;
+        }
+
+        /* Lightbox (Click per ingrandire) */
         .img-container:focus img {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: contain;
+            object-fit: contain; /* Mostra tutta la foto senza tagliarla anche da zoomata */
             z-index: 9999;
             background: white;
-            padding: 10px;
+            padding: 20px;
             box-sizing: border-box;
+            border-radius: 0;
         }
 
-        /* Nasconde la barra di scorrimento quando l'immagine è aperta (opzionale) */
-        .img-container:focus {
+        /* X per chiudere virtuale (opzionale: ricorda all'utente che può cliccare ovunque) */
+        .img-container:focus::after {
+            content: "✕ Chiudi";
+            position: fixed;
+            top: 20px;
+            right: 20px;
             z-index: 10000;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -57,17 +82,25 @@
 
     <div class="gallery">
         <div class="img-container" tabindex="0">
-            <img src="Untitled 2.png" alt="Foto">
+            <img src="https://picsum.photos/600/800" alt="Verticale">
         </div>
         
         <div class="img-container" tabindex="0">
-            <img src="Untitled.png" alt="Foto">
+            <img src="https://picsum.photos/1200/800" alt="Orizzontale">
         </div>
 
         <div class="img-container" tabindex="0">
-            <img src="aa.png" alt="Foto">
+            <img src="https://picsum.photos/800/800" alt="Quadrata">
         </div>
+
+        <div class="img-container" tabindex="0">
+            <img src="https://picsum.photos/400/700" alt="Molto alta">
         </div>
+        
+        <div class="img-container" tabindex="0">
+            <img src="https://picsum.photos/900/600" alt="Foto wide">
+        </div>
+    </div>
 
 </body>
 </html>
