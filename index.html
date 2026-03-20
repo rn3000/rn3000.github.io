@@ -11,15 +11,15 @@
             font-family: sans-serif;
         }
 
-        /* Il segreto: usare le colonne invece delle righe */
+        /* Layout a colonne (Masonry) per evitare buchi bianchi */
         .gallery {
-            column-count: 2; /* Forza 2 colonne */
-            column-gap: 15px; /* Spazio orizzontale tra colonne */
+            column-count: 2;
+            column-gap: 15px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Su mobile passa a 1 colonna */
+        /* Mobile: 1 sola colonna */
         @media (max-width: 600px) {
             .gallery { column-count: 1; }
         }
@@ -27,22 +27,20 @@
         .img-container {
             display: block;
             width: 100%;
-            margin-bottom: 15px; /* Spazio verticale tra le immagini */
-            break-inside: avoid; /* Impedisce all'immagine di rompersi tra due colonne */
+            margin-bottom: 15px;
+            break-inside: avoid;
             cursor: pointer;
         }
 
         .img-container img {
             width: 100%;
-            height: auto; /* Nessun taglio, mantiene le proporzioni */
+            height: auto;
             display: block;
             border-radius: 4px;
-            transition: opacity 0.3s ease;
+            /* Rimosse le proprietà di transizione e opacità qui */
         }
 
-        .img-container:hover img {
-            opacity: 0.8;
-        }
+        /* Rimosso completamente l'effetto hover (overlay/opacità) */
 
         /* Fullscreen Zoom */
         .img-container.active img {
@@ -68,8 +66,7 @@
             <img src="/img/weapon1.png" alt="Foto 1">
         </div>
 
-        
-    </div>
+        </div>
 
     <script>
         function toggleImage(el) {
