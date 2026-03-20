@@ -3,59 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galleria</title>
+    <title>Galleria Dinamica</title>
     <style>
         body {
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             background-color: white;
             font-family: sans-serif;
         }
 
-        /* Layout Masonry (adattivo) */
+        /* Contenitore Flex: permette alle immagini di crescere e riempire i buchi */
         .gallery {
-            column-count: 3;
-            column-gap: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        @media (max-width: 900px) { .gallery { column-count: 2; } }
-        @media (max-width: 600px) { .gallery { column-count: 1; } }
-
         .img-container {
-            display: inline-block;
-            width: 100%;
-            margin-bottom: 10px;
+            flex: 1 1 calc(33.333% - 10px); /* Prova a stare su 3 colonne */
+            min-width: 300px; /* Non scende sotto i 300px (diventa 2 o 1 colonna su mobile) */
+            height: 300px; /* Altezza fissa per mantenere l'allineamento orizzontale */
             cursor: pointer;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .img-container {
+                flex: 1 1 100%; /* Su cellulare occupa tutta la riga */
+            }
         }
 
         .img-container img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover; /* Riempie lo spazio senza deformarsi */
             display: block;
-            border-radius: 4px;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease;
         }
 
         .img-container:hover img {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
-        /* Stile per l'immagine ingrandita */
+        /* Lightbox Fullscreen */
         .img-container.fullscreen img {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: contain;
+            object-fit: contain; /* Nello zoom vedi tutta la foto originale */
             z-index: 9999;
             background: white;
-            padding: 20px;
+            padding: 15px;
             box-sizing: border-box;
-            border-radius: 0;
-            transform: none; /* Rimuove lo scale dell'hover */
+            transform: none;
         }
     </style>
 </head>
@@ -77,10 +81,7 @@
 
     <script>
         function toggleFullscreen(element) {
-            // Aggiunge o rimuove la classe 'fullscreen' al click
             element.classList.toggle('fullscreen');
-            
-            // Impedisce lo scroll della pagina quando l'immagine è aperta
             if (element.classList.contains('fullscreen')) {
                 document.body.style.overflow = 'hidden';
             } else {
