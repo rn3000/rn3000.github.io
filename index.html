@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleria</title>
     <style>
         body {
             margin: 0;
@@ -11,90 +12,82 @@
             font-family: sans-serif;
         }
 
-        /* La Griglia Intelligente */
+        /* Layout Masonry (adattivo) */
         .gallery {
-            /* Usiamo le colonne CSS per un effetto "diario/masonry" senza tagliare le foto */
             column-count: 3;
             column-gap: 15px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Cambio colonne in base alla grandezza schermo */
-        @media (max-width: 900px) {
-            .gallery { column-count: 2; }
-        }
-        @media (max-width: 600px) {
-            .gallery { column-count: 1; }
-        }
+        @media (max-width: 900px) { .gallery { column-count: 2; } }
+        @media (max-width: 600px) { .gallery { column-count: 1; } }
 
         .img-container {
-            display: inline-block; /* Necessario per il layout a colonne */
+            display: inline-block;
             width: 100%;
             margin-bottom: 10px;
             cursor: pointer;
-            outline: none;
         }
 
         .img-container img {
             width: 100%;
-            height: auto; /* Mantiene le proporzioni originali (niente crop) */
+            height: auto;
             display: block;
-            border-radius: 4px; /* Opzionale: arrotonda leggermente gli angoli */
-            transition: opacity 0.2s;
+            border-radius: 4px;
+            transition: transform 0.2s ease;
         }
 
         .img-container:hover img {
-            opacity: 0.9;
+            transform: scale(1.02);
         }
 
-        /* Lightbox (Click per ingrandire) */
-        .img-container:focus img {
+        /* Stile per l'immagine ingrandita */
+        .img-container.fullscreen img {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: contain; /* Mostra tutta la foto senza tagliarla anche da zoomata */
+            object-fit: contain;
             z-index: 9999;
             background: white;
             padding: 20px;
             box-sizing: border-box;
             border-radius: 0;
-        }
-
-        /* X per chiudere virtuale (opzionale: ricorda all'utente che può cliccare ovunque) */
-        .img-container:focus::after {
-            content: "✕ Chiudi";
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
+            transform: none; /* Rimuove lo scale dell'hover */
         }
     </style>
 </head>
 <body>
 
     <div class="gallery">
-        
-        <div class="img-container" tabindex="0">
-            <img src="Untitled.png" alt="Quadrata">
+        <div class="img-container" onclick="toggleFullscreen(this)">
+            <img src="Untitled.png" alt="Immagine">
         </div>
 
-        <div class="img-container" tabindex="0">
-            <img src="Untitled 2.png" alt="Molto alta">
+        <div class="img-container" onclick="toggleFullscreen(this)">
+            <img src="Untitled 2.png" alt="Immagine">
         </div>
         
-        <div class="img-container" tabindex="0">
-            <img src="aa.png" alt="Foto wide">
+        <div class="img-container" onclick="toggleFullscreen(this)">
+            <img src="aa.png" alt="Immagine">
         </div>
-        
     </div>
+
+    <script>
+        function toggleFullscreen(element) {
+            // Aggiunge o rimuove la classe 'fullscreen' al click
+            element.classList.toggle('fullscreen');
+            
+            // Impedisce lo scroll della pagina quando l'immagine è aperta
+            if (element.classList.contains('fullscreen')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
 
 </body>
 </html>
