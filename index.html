@@ -11,56 +11,57 @@
             font-family: sans-serif;
         }
 
-        /* Griglia a 2 colonne fisse su desktop, 1 su mobile */
+        /* Griglia Flex: gestisce le righe e le colonne */
         .gallery {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 15px; /* Spazio tra le immagini */
             max-width: 1200px;
             margin: 0 auto;
+            align-items: flex-start; /* Allinea le immagini in cima alla riga */
         }
 
         .img-container {
-            /* Calcolo per 2 colonne (50% meno il gap) */
-            flex: 1 1 calc(50% - 15px); 
-            height: 400px; /* Altezza fissa per un look ordinato in griglia */
+            /* Calcolo per 2 colonne precise (50% meno metà del gap) */
+            flex: 0 0 calc(50% - 7.5px); 
             cursor: pointer;
             overflow: hidden;
-            background-color: #f0f0f0;
+            background-color: transparent; /* Rimosso sfondo grigio */
+            box-sizing: border-box;
         }
 
-        /* Su schermi piccoli (mobile), passa a 1 colonna */
+        /* Su mobile, passa a 1 colonna */
         @media (max-width: 768px) {
             .img-container {
-                flex: 1 1 100%;
-                height: 300px;
+                flex: 0 0 100%;
             }
         }
 
         .img-container img {
             width: 100%;
-            height: 100%;
-            object-fit: cover; /* Riempie il riquadro senza deformarsi */
+            height: auto; /* IMPORTANTE: Mantiene le proporzioni originali (niente crop) */
             display: block;
             transition: opacity 0.3s ease;
+            border-radius: 4px; /* Opzionale: angoli leggermente arrotondati */
         }
 
         .img-container:hover img {
             opacity: 0.8;
         }
 
-        /* Stile Ingrandimento (Fullscreen) */
+        /* --- Stile Ingrandimento (Fullscreen) --- */
         .img-container.active img {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: contain; /* Mostra l'immagine intera senza tagliarla */
+            object-fit: contain; /* Mostra l'immagine intera nello zoom */
             z-index: 9999;
             background: white;
             padding: 10px;
             box-sizing: border-box;
+            border-radius: 0; /* Rimuove arrotondamento nello zoom */
         }
     </style>
 </head>
@@ -78,7 +79,8 @@
         <div class="img-container" onclick="toggleImage(this)">
             <img src="aa.png" alt="Foto 3">
         </div>
-    </div>
+        
+        </div>
 
     <script>
         function toggleImage(el) {
