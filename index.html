@@ -6,62 +6,57 @@
     <style>
         body {
             margin: 0;
-            padding: 10px;
+            padding: 15px;
             background-color: white;
             font-family: sans-serif;
         }
 
-        /* Griglia Flex: gestisce le righe e le colonne */
+        /* Il segreto: usare le colonne invece delle righe */
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px; /* Spazio tra le immagini */
+            column-count: 2; /* Forza 2 colonne */
+            column-gap: 15px; /* Spazio orizzontale tra colonne */
             max-width: 1200px;
             margin: 0 auto;
-            align-items: flex-start; /* Allinea le immagini in cima alla riga */
+        }
+
+        /* Su mobile passa a 1 colonna */
+        @media (max-width: 600px) {
+            .gallery { column-count: 1; }
         }
 
         .img-container {
-            /* Calcolo per 2 colonne precise (50% meno metà del gap) */
-            flex: 0 0 calc(50% - 7.5px); 
+            display: block;
+            width: 100%;
+            margin-bottom: 15px; /* Spazio verticale tra le immagini */
+            break-inside: avoid; /* Impedisce all'immagine di rompersi tra due colonne */
             cursor: pointer;
-            overflow: hidden;
-            background-color: transparent; /* Rimosso sfondo grigio */
-            box-sizing: border-box;
-        }
-
-        /* Su mobile, passa a 1 colonna */
-        @media (max-width: 768px) {
-            .img-container {
-                flex: 0 0 100%;
-            }
         }
 
         .img-container img {
             width: 100%;
-            height: auto; /* IMPORTANTE: Mantiene le proporzioni originali (niente crop) */
+            height: auto; /* Nessun taglio, mantiene le proporzioni */
             display: block;
+            border-radius: 4px;
             transition: opacity 0.3s ease;
-            border-radius: 4px; /* Opzionale: angoli leggermente arrotondati */
         }
 
         .img-container:hover img {
             opacity: 0.8;
         }
 
-        /* --- Stile Ingrandimento (Fullscreen) --- */
+        /* Fullscreen Zoom */
         .img-container.active img {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: contain; /* Mostra l'immagine intera nello zoom */
+            object-fit: contain;
             z-index: 9999;
             background: white;
             padding: 10px;
             box-sizing: border-box;
-            border-radius: 0; /* Rimuove arrotondamento nello zoom */
+            border-radius: 0;
         }
     </style>
 </head>
@@ -79,15 +74,11 @@
         <div class="img-container" onclick="toggleImage(this)">
             <img src="aa.png" alt="Foto 3">
         </div>
-        
-        </div>
+    </div>
 
     <script>
         function toggleImage(el) {
-            // Aggiunge/rimuove la classe 'active' per lo zoom
             el.classList.toggle('active');
-            
-            // Blocca lo scroll della pagina quando l'immagine è aperta
             if (el.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
             } else {
